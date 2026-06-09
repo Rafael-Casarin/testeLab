@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planos | LabLeaf</title>
+    <link rel="stylesheet" href="planos.css?v=4" />
+  </head>
+
+  <body data-auth-required="true">
+    <script>
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <header class="cabecalho">
+      <a class="logo-area" href="index.html" aria-label="Ir para a página inicial">
+        <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+        <span class="logo-texto">LabLeaf</span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <a href="index.html">Análise</a>
+        <a href="relatorio.html">Relatórios</a>
+        <a href="planos.html" class="active">Planos</a>
+      </nav>
+
+      <div class="user-container">
+        <button
+          class="user"
+          id="menuButton"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="dropdown" id="dropdownMenu">
+          <div class="dropdown-mobile-nav" aria-label="Navegação mobile">
+            <a href="index.html">Análise</a>
+            <a href="relatorio.html">Relatórios</a>
+            <a href="planos.html" class="active">Planos</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="configuracoes.html">Configurações</a>
+          <a href="perfil.html">Perfil</a>
+          <a href="login.html" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="planos-hero" aria-labelledby="planosTitle">
+        <p class="eyebrow">Planos</p>
+        <h1 id="planosTitle">Escolha o nível certo para acompanhar sua lavoura.</h1>
+        <p>
+          Cada plano libera um pacote de tokens. Cada diagnóstico salvo consome
+          1 token, mantendo o uso previsível para testes, aulas ou rotina de campo.
+        </p>
+      </section>
+
+      <section class="subscription-status" id="subscriptionStatus" aria-live="polite">
+        <div>
+          <span>Plano atual</span>
+          <strong>Nenhum plano ativo</strong>
+        </div>
+        <p>Escolha um plano para liberar tokens de análise.</p>
+      </section>
+
+      <section class="planos-grid" aria-label="Lista de planos">
+        <article class="plano-card" data-plan-card="essencial">
+          <div class="plano-topo">
+            <span class="plano-tag">Inicial</span>
+            <h2>Essencial</h2>
+            <p>Para apresentar o funcionamento da plataforma e validar análises pontuais.</p>
+          </div>
+
+          <div class="plano-preco">
+            <strong>R$ 49</strong>
+            <span>/mês</span>
+          </div>
+
+          <ul class="beneficios">
+            <li>30 análises por ciclo</li>
+            <li>Download do resultado</li>
+            <li>Histórico simplificado</li>
+            <li>Suporte por e-mail</li>
+          </ul>
+
+          <button class="btn-secondary plan-select" type="button" data-plan-id="essencial">
+            Escolher plano
+          </button>
+        </article>
+
+        <article class="plano-card destaque" data-plan-card="pro">
+          <div class="plano-badge">Mais indicado</div>
+
+          <div class="plano-topo">
+            <span class="plano-tag">Profissional</span>
+            <h2>Pro</h2>
+            <p>Para acompanhar mais imagens e apresentar relatórios com melhor organização.</p>
+          </div>
+
+          <div class="plano-preco">
+            <strong>R$ 99</strong>
+            <span>/mês</span>
+          </div>
+
+          <ul class="beneficios">
+            <li>120 análises por ciclo</li>
+            <li>Relatórios completos</li>
+            <li>Filtros por doença e período</li>
+            <li>Suporte prioritário</li>
+          </ul>
+
+          <button class="btn-primary plan-select" type="button" data-plan-id="pro">
+            Assinar agora
+          </button>
+        </article>
+
+        <article class="plano-card" data-plan-card="avancado">
+          <div class="plano-topo">
+            <span class="plano-tag">Institucional</span>
+            <h2>Avançado</h2>
+            <p>Para turmas, laboratórios ou equipes que precisam de maior volume.</p>
+          </div>
+
+          <div class="plano-preco">
+            <strong>R$ 199</strong>
+            <span>/mês</span>
+          </div>
+
+          <ul class="beneficios">
+            <li>500 análises por ciclo</li>
+            <li>Exportação de relatórios</li>
+            <li>Uso institucional</li>
+            <li>Suporte dedicado</li>
+          </ul>
+
+          <button class="btn-secondary plan-select" type="button" data-plan-id="avancado">
+            Escolher plano
+          </button>
+        </article>
+      </section>
+
+      <section class="comparison-section" aria-labelledby="comparisonTitle">
+        <div>
+          <p class="eyebrow">Resumo</p>
+          <h2 id="comparisonTitle">Como os tokens funcionam</h2>
+        </div>
+
+        <div class="comparison-list">
+          <div>
+            <span>Uso</span>
+            <strong>1 análise salva consome 1 token do plano ativo.</strong>
+          </div>
+          <div>
+            <span>Bloqueio</span>
+            <strong>Sem tokens, o envio é bloqueado antes de chamar a IA.</strong>
+          </div>
+          <div>
+            <span>Renovação</span>
+            <strong>Um novo pagamento fictício reinicia o saldo do plano.</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>LabLeaf - Inteligência para análise agrícola</p>
+          <p>Contato: lableaf@gmail.com</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+          <a href="https://github.com/LabLeafBR" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="checkout-overlay" id="checkoutModal" hidden>
+      <section class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+        <button class="modal-close" id="closeCheckout" type="button" aria-label="Fechar pagamento">
+          ×
+        </button>
+
+        <div class="checkout-summary">
+          <p class="eyebrow">Pagamento fictício</p>
+          <h2 id="checkoutTitle">Confirmar plano</h2>
+          <div class="checkout-plan">
+            <span id="checkoutPlanTag">Plano</span>
+            <strong id="checkoutPlanName">--</strong>
+            <p id="checkoutPlanDetails">--</p>
+          </div>
+        </div>
+
+        <form class="checkout-form" id="checkoutForm">
+          <input type="hidden" id="checkoutPlanId" />
+
+          <div class="input-group">
+            <label for="cardName">Nome no cartão</label>
+            <input id="cardName" type="text" placeholder="Nome completo" autocomplete="cc-name" required />
+          </div>
+
+          <div class="input-group">
+            <label for="cardNumber">Número do cartão</label>
+            <input id="cardNumber" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="cc-number" required />
+          </div>
+
+          <div class="checkout-row">
+            <div class="input-group">
+              <label for="cardExpiry">Validade</label>
+              <input id="cardExpiry" type="text" placeholder="12/30" autocomplete="cc-exp" required />
+            </div>
+
+            <div class="input-group">
+              <label for="cardCvv">CVV</label>
+              <input id="cardCvv" type="text" inputmode="numeric" placeholder="123" autocomplete="cc-csc" required />
+            </div>
+          </div>
+
+          <p class="checkout-note">Pagamento de demonstração. Nenhum valor real será cobrado.</p>
+          <p id="checkoutStatus" class="checkout-status" aria-live="polite"></p>
+
+          <button class="btn-primary" type="submit">Pagar e ativar plano</button>
+        </form>
+      </section>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="planos.js?v=4"></script>
+  </body>
+</html>

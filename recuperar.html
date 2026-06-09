@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperar senha | LabLeaf</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+
+  <body>
+    <main class="auth-page">
+      <section class="brand-panel" aria-label="Recuperação de acesso LabLeaf">
+        <header class="brand-header">
+          <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+          <span>LabLeaf</span>
+        </header>
+
+        <div class="brand-copy">
+          <p class="eyebrow">Acesso seguro</p>
+          <h1>Recupere sua conta sem perder o histórico de análises.</h1>
+          <p>
+            Use o e-mail cadastrado para gerar um link de redefinição. Depois,
+            escolha uma nova senha e volte ao painel.
+          </p>
+        </div>
+
+        <div class="preview-panel">
+          <img src="imagens/Leaf.png" alt="Identidade visual LabLeaf" />
+          <div>
+            <span>Conta protegida</span>
+            <strong>O link expira automaticamente para manter seus dados seguros.</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-panel" aria-labelledby="recoverTitle">
+        <div class="form-card">
+          <p class="eyebrow">Redefinição</p>
+          <h2 id="recoverTitle">Recuperar senha</h2>
+          <p class="subtitle" id="recoverSubtitle">
+            Informe seu e-mail para receber um link de redefinição.
+          </p>
+
+          <form id="requestResetForm">
+            <div class="input-group">
+              <label for="email">E-mail cadastrado</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="seuemail@exemplo.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <p id="requestStatus" class="form-message" aria-live="polite"></p>
+            <div id="devResetLink" class="reset-link-box" hidden></div>
+
+            <button type="submit" class="btn-primary">Gerar link</button>
+
+            <p class="form-link">
+              Lembrou a senha? <a href="login.html">Entrar</a>
+            </p>
+          </form>
+
+          <form id="resetPasswordForm" hidden>
+            <input type="hidden" id="token" />
+
+            <div class="input-group">
+              <label for="senha">Nova senha</label>
+              <input
+                type="password"
+                id="senha"
+                placeholder="Digite a nova senha"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="confirmarSenha">Confirmar nova senha</label>
+              <input
+                type="password"
+                id="confirmarSenha"
+                placeholder="Repita a nova senha"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+
+            <p class="password-tip">Use pelo menos 8 caracteres.</p>
+            <p id="resetStatus" class="form-message" aria-live="polite"></p>
+
+            <button type="submit" class="btn-primary">Alterar senha</button>
+
+            <p class="form-link">
+              <a href="login.html">Voltar para login</a>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="recuperar.js"></script>
+  </body>
+</html>

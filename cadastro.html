@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro | LabLeaf</title>
+    <link rel="stylesheet" href="cadastro.css" />
+  </head>
+
+  <body>
+    <main class="auth-page">
+      <section class="brand-panel" aria-label="Apresentação do cadastro">
+        <header class="brand-header">
+          <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+          <span>LabLeaf</span>
+        </header>
+
+        <div class="brand-copy">
+          <p class="eyebrow">Comece pelo diagnóstico</p>
+          <h1>Crie sua conta para organizar análises da lavoura.</h1>
+          <p>
+            O cadastro libera o envio de imagens, o histórico de resultados e a
+            consulta rápida aos principais diagnósticos foliares.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step-card">
+            <span>01</span>
+            <strong>Envie a imagem</strong>
+            <p>Selecione uma foto nítida da folha para análise.</p>
+          </div>
+          <div class="step-card">
+            <span>02</span>
+            <strong>Veja o resultado</strong>
+            <p>Receba a doença provável, confiança e recomendação inicial.</p>
+          </div>
+          <div class="step-card">
+            <span>03</span>
+            <strong>Guarde o registro</strong>
+            <p>Baixe o resultado e acompanhe o histórico depois.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-panel" aria-labelledby="cadastroTitle">
+        <div class="form-card">
+          <p class="eyebrow">Nova conta</p>
+          <h2 id="cadastroTitle">Cadastro</h2>
+          <p class="subtitle">Preencha os dados para criar seu acesso.</p>
+
+          <form onsubmit="cadastrar(event)">
+            <div class="input-group">
+              <label for="nome">Nome completo</label>
+              <input
+                type="text"
+                id="nome"
+                placeholder="Digite seu nome completo"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="email">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="seuemail@exemplo.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="senha">Senha</label>
+              <input
+                type="password"
+                id="senha"
+                placeholder="Crie uma senha"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="confirmarSenha">Confirmar senha</label>
+              <input
+                type="password"
+                id="confirmarSenha"
+                placeholder="Repita sua senha"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+
+            <p class="password-tip">Use pelo menos 8 caracteres.</p>
+            <p id="erroSenha" class="form-error" aria-live="polite"></p>
+
+            <button type="submit" class="btn-primary">Cadastrar</button>
+
+            <p class="form-link">
+              Já tem conta? <a href="login.html">Entrar</a>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurações | LabLeaf</title>
+    <link rel="stylesheet" href="conta.css" />
+  </head>
+
+  <body data-auth-required="true">
+    <script>
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <header class="cabecalho">
+      <a class="logo-area" href="index.html" aria-label="Ir para a página inicial">
+        <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+        <span class="logo-texto">LabLeaf</span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <a href="index.html">Análise</a>
+        <a href="relatorio.html">Relatórios</a>
+        <a href="planos.html">Planos</a>
+      </nav>
+
+      <div class="user-container">
+        <button class="user" id="menuButton" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="dropdown" id="dropdownMenu">
+          <div class="dropdown-mobile-nav" aria-label="Navegação mobile">
+            <a href="index.html">Análise</a>
+            <a href="relatorio.html">Relatórios</a>
+            <a href="planos.html">Planos</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="configuracoes.html" class="active">Configurações</a>
+          <a href="perfil.html">Perfil</a>
+          <a href="login.html" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-hero" aria-labelledby="settingsTitle">
+        <p class="eyebrow">Preferências</p>
+        <h1 id="settingsTitle">Configurações da plataforma</h1>
+        <p>
+          Ajuste como a conta registra análises, organiza relatórios e apresenta
+          informações no painel.
+        </p>
+      </section>
+
+      <section class="account-grid" aria-label="Configurações da conta">
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>Preferências operacionais</h2>
+            <p>Essas opções ficam salvas na sua conta e acompanham o usuário.</p>
+          </div>
+
+          <form id="settingsForm">
+            <div class="settings-list">
+              <div class="setting-row">
+                <div>
+                  <strong>Período padrão dos relatórios</strong>
+                  <p>Define o intervalo inicial usado para consultar o dashboard.</p>
+                </div>
+                <div class="input-group">
+                  <label for="defaultReportPeriod">Período</label>
+                  <select id="defaultReportPeriod">
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30">Últimos 30 dias</option>
+                    <option value="all">Todos</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-row">
+                <div>
+                  <strong>Notificações por e-mail</strong>
+                  <p>Prepara a conta para receber avisos quando o envio de e-mails for ativado.</p>
+                </div>
+                <label class="toggle" for="emailNotifications">
+                  <input id="emailNotifications" type="checkbox" />
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="setting-row">
+                <div>
+                  <strong>Salvar imagens analisadas</strong>
+                  <p>Quando ativo, o histórico guarda a imagem enviada junto ao diagnóstico.</p>
+                </div>
+                <label class="toggle" for="saveUploadedImages">
+                  <input id="saveUploadedImages" type="checkbox" />
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="setting-row">
+                <div>
+                  <strong>Painel compacto</strong>
+                  <p>Preferência visual para mostrar relatórios com menos espaçamento.</p>
+                </div>
+                <label class="toggle" for="compactDashboard">
+                  <input id="compactDashboard" type="checkbox" />
+                  <span></span>
+                </label>
+              </div>
+            </div>
+
+            <p id="settingsStatus" class="form-message" aria-live="polite"></p>
+
+            <div class="actions">
+              <a class="btn-secondary" href="perfil.html">Editar perfil</a>
+              <button class="btn-primary" type="submit">Salvar configurações</button>
+            </div>
+          </form>
+        </article>
+
+        <aside class="summary-panel">
+          <div class="profile-badge">C</div>
+          <h2>Controle da conta</h2>
+          <p>
+            As configurações ajudam a adaptar a experiência sem alterar o modelo
+            de análise da IA.
+          </p>
+
+          <div class="summary-list">
+            <div>
+              <span>Banco de dados</span>
+              <strong>Preferências persistidas por usuário</strong>
+            </div>
+            <div>
+              <span>Segurança</span>
+              <strong>Alterações exigem sessão ativa</strong>
+            </div>
+            <div>
+              <span>IA</span>
+              <strong>URL configurada no ambiente do backend</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>LabLeaf - Inteligência para análise agrícola</p>
+          <p>Contato: lableaf@gmail.com</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+          <a href="https://github.com/LabLeafBR" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="configuracoes.js"></script>
+  </body>
+</html>

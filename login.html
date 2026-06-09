@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar | LabLeaf</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+
+  <body>
+    <main class="auth-page">
+      <section class="brand-panel" aria-label="Apresentação do LabLeaf">
+        <header class="brand-header">
+          <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+          <span>LabLeaf</span>
+        </header>
+
+        <div class="brand-copy">
+          <p class="eyebrow">Inteligência para análise agrícola</p>
+          <h1>Monitore folhas de soja com uma experiência mais clara.</h1>
+          <p>
+            Envie imagens, acompanhe diagnósticos e mantenha o histórico das
+            análises em um painel organizado para tomada de decisão.
+          </p>
+        </div>
+
+        <div class="preview-panel">
+          <img src="imagens/Leaf.png" alt="Identidade visual LabLeaf" />
+          <div>
+            <span>Fluxo principal</span>
+            <strong>Imagem, diagnóstico e recomendação em uma única jornada.</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-panel" aria-labelledby="loginTitle">
+        <div class="form-card">
+          <p class="eyebrow">Acesso</p>
+          <h2 id="loginTitle">Entrar na conta</h2>
+          <p class="subtitle">Use seu e-mail e senha para acessar o painel.</p>
+
+          <form onsubmit="entrar(event)">
+            <div class="input-group">
+              <label for="email">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="seuemail@exemplo.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="senha">Senha</label>
+              <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+            <div class="form-options">
+              <label class="remember">
+                <input type="checkbox" />
+                <span>Lembrar de mim</span>
+              </label>
+
+              <a href="recuperar.html">Esqueci minha senha</a>
+            </div>
+
+            <button type="submit" class="btn-primary">Entrar</button>
+
+            <p class="form-link">
+              Não tem conta? <a href="cadastro.html">Cadastre-se</a>
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+  </body>
+</html>

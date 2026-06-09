@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LabLeaf | Análise agrícola</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body data-auth-required="true">
+    <script>
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <header class="cabecalho">
+      <a class="logo-area" href="index.html" aria-label="Ir para a página inicial">
+        <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+        <span class="logo-texto">LabLeaf</span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <a href="#" class="active">Análise</a>
+        <a href="relatorio.html">Relatórios</a>
+        <a href="planos.html">Planos</a>
+      </nav>
+
+      <div class="user-container">
+        <button
+          class="user"
+          id="menuButton"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="dropdown" id="dropdownMenu">
+          <div class="dropdown-mobile-nav" aria-label="Navegação mobile">
+            <a href="index.html" class="active">Análise</a>
+            <a href="relatorio.html">Relatórios</a>
+            <a href="planos.html">Planos</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="configuracoes.html">Configurações</a>
+          <a href="perfil.html">Perfil</a>
+          <a href="login.html" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="upload-section" aria-labelledby="uploadTitle">
+        <div class="upload-intro">
+          <p class="eyebrow">Diagnóstico foliar por imagem</p>
+          <h1 id="uploadTitle">Enviar imagem</h1>
+          <p>
+            A análise retorna a doença provável, o nível de confiança e uma
+            recomendação inicial para orientar a próxima decisão em campo.
+          </p>
+        </div>
+
+        <div class="upload-panel">
+          <input type="file" id="imagemInput" accept="image/*" hidden />
+
+          <button class="dropzone" id="botaoUpload" type="button">
+            <span class="dropzone-icon" aria-hidden="true">+</span>
+            <span class="dropzone-title">Selecionar foto da folha</span>
+            <span class="dropzone-subtitle">JPG, PNG ou WEBP</span>
+          </button>
+
+          <div class="selected-file" id="selectedFile" hidden>
+            <div class="selected-preview">
+              <img id="previewImagem" alt="Imagem selecionada para análise" />
+            </div>
+
+            <div class="selected-info">
+              <p class="selected-label">Arquivo selecionado</p>
+              <p id="nomeArquivo"></p>
+            </div>
+
+            <button id="removerImagem" class="btn-icon-text" type="button">
+              Remover
+            </button>
+          </div>
+
+          <p class="status-line" id="statusAnalise" aria-live="polite">
+            Aguardando imagem.
+          </p>
+        </div>
+      </section>
+
+      <section class="doencas-section" aria-labelledby="doencasTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Referência rápida</p>
+          <h2 id="doencasTitle">Doenças comuns em folhas de soja</h2>
+        </div>
+
+        <div class="doencas-grid">
+          <article class="doenca-card">
+            <img
+              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Soybean%20rust.jpg"
+              alt="Folhas de soja com ferrugem asiática"
+              loading="lazy"
+            />
+            <div class="doenca-content">
+              <span>Fungo</span>
+              <h3>Ferrugem asiática</h3>
+              <p>
+                Manchas pequenas que evoluem rapidamente e podem provocar perda
+                de área foliar quando não monitoradas.
+              </p>
+              <a href="https://www.embrapa.br/soja/ferrugem" target="_blank" rel="noopener noreferrer">
+                Saiba mais
+              </a>
+            </div>
+          </article>
+
+          <article class="doenca-card">
+            <img
+              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Soybean%20Bacterial%20leaf%20spot%20%28Pathogen%20Pseudomonas%20syringae%20pv.%20glycinea%29%20%2812074577444%29.jpg"
+              alt="Folha de soja com lesões bacterianas"
+              loading="lazy"
+            />
+            <div class="doenca-content">
+              <span>Bactéria</span>
+              <h3>Crestamento bacteriano</h3>
+              <p>
+                Lesões aquosas e áreas necrosadas, normalmente favorecidas por
+                umidade elevada e chuva com vento.
+              </p>
+              <a href="https://www.embrapa.br/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-bacterias/crestamento-bacteriano" target="_blank" rel="noopener noreferrer">
+                Saiba mais
+              </a>
+            </div>
+          </article>
+
+          <article class="doenca-card">
+            <img
+              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Powdery%20mildew1364200569.jpg"
+              alt="Folha com sinais de oídio"
+              loading="lazy"
+            />
+            <div class="doenca-content">
+              <span>Fungo</span>
+              <h3>Oídio</h3>
+              <p>
+                Cobertura esbranquiçada sobre a folha que pode reduzir o vigor
+                da planta em infecções severas.
+              </p>
+              <a href="https://www.embrapa.br/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-fungos/oidio" target="_blank" rel="noopener noreferrer">
+                Saiba mais
+              </a>
+            </div>
+          </article>
+
+          <article class="doenca-card">
+            <img
+              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/5470054-PPT.jpg"
+              alt="Folhas de soja com sintomas de mosaico"
+              loading="lazy"
+            />
+            <div class="doenca-content">
+              <span>Vírus</span>
+              <h3>Mosaico comum</h3>
+              <p>
+                Folhas encarquilhadas e coloração irregular, com transmissão
+                associada a sementes infectadas e pulgões.
+              </p>
+              <a href="https://www.embrapa.br/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-virus/mosaico-comum-da-soja" target="_blank" rel="noopener noreferrer">
+                Saiba mais
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-overlay" id="resultadoModal" hidden>
+      <section
+        class="resultado-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <button class="modal-close" id="fecharModal" type="button" aria-label="Fechar resultado">
+          ×
+        </button>
+
+        <div class="modal-media">
+          <img id="modalImagem" alt="Imagem analisada" />
+        </div>
+
+        <div class="modal-content">
+          <p class="modal-kicker" id="modalStatus">Análise em andamento</p>
+          <h2 id="modalTitle">Resultado da análise</h2>
+
+          <div class="result-summary">
+            <div>
+              <span>Doença identificada</span>
+              <strong id="resultadoClasse">Processando...</strong>
+            </div>
+            <div>
+              <span>Confiança</span>
+              <strong id="resultadoConfianca">--</strong>
+            </div>
+          </div>
+
+          <div class="recommendation-box">
+            <span>Recomendação inicial</span>
+            <p id="resultadoRecomendacao">
+              Aguardando retorno do modelo.
+            </p>
+          </div>
+
+          <p class="modal-note">
+            O diagnóstico é uma triagem por IA e não substitui a avaliação de um
+            profissional da área.
+          </p>
+
+          <div class="modal-actions">
+            <button class="btn-secondary" id="baixarImagem" type="button" disabled>
+              Baixar foto
+            </button>
+            <button class="btn-primary" id="baixarPdf" type="button" disabled>
+              Baixar PDF
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>LabLeaf - Inteligência para análise agrícola</p>
+          <p>Contato: lableaf@gmail.com</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+          <a href="https://github.com/LabLeafBR" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

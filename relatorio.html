@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatórios | LabLeaf</title>
+    <link rel="stylesheet" href="relatorio.css" />
+  </head>
+
+  <body data-auth-required="true">
+    <script>
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <header class="cabecalho">
+      <a class="logo-area" href="index.html" aria-label="Ir para a página inicial">
+        <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+        <span class="logo-texto">LabLeaf</span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <a href="index.html">Análise</a>
+        <a href="relatorio.html" class="active">Relatórios</a>
+        <a href="planos.html">Planos</a>
+      </nav>
+
+      <div class="user-container">
+        <button
+          class="user"
+          id="menuButton"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="dropdown" id="dropdownMenu">
+          <div class="dropdown-mobile-nav" aria-label="Navegação mobile">
+            <a href="index.html">Análise</a>
+            <a href="relatorio.html" class="active">Relatórios</a>
+            <a href="planos.html">Planos</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="configuracoes.html">Configurações</a>
+          <a href="perfil.html">Perfil</a>
+          <a href="login.html" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="dashboard-hero" aria-labelledby="relatoriosTitle">
+        <div>
+          <p class="eyebrow">Relatórios</p>
+          <h1 id="relatoriosTitle">Visão geral das análises</h1>
+          <p>
+            Acompanhe indicadores, distribuição dos diagnósticos e histórico
+            recente das imagens analisadas.
+          </p>
+        </div>
+
+        <button class="btn-primary" id="exportReport" type="button">Exportar relatório</button>
+      </section>
+
+      <section class="resumo-grid" aria-label="Resumo das análises">
+        <article class="metric-card">
+          <span>Total de análises</span>
+          <strong id="metricTotal">0</strong>
+          <p id="metricTotalHint">Carregando dados</p>
+        </article>
+
+        <article class="metric-card">
+          <span>Casos doentes</span>
+          <strong class="danger-text" id="metricDoentes">0</strong>
+          <p id="metricDoentesHint">0% das amostras</p>
+        </article>
+
+        <article class="metric-card">
+          <span>Folhas saudáveis</span>
+          <strong class="success-text" id="metricSaudaveis">0</strong>
+          <p id="metricSaudaveisHint">0% das amostras</p>
+        </article>
+
+        <article class="metric-card">
+          <span>Doença mais comum</span>
+          <strong id="metricMaisComum">Nenhuma</strong>
+          <p id="metricMaisComumHint">0 ocorrências</p>
+        </article>
+      </section>
+
+      <section class="filter-card" aria-label="Filtros de relatório">
+        <select class="filtro-select" id="periodFilter" aria-label="Período">
+          <option value="7">Últimos 7 dias</option>
+          <option value="30">Últimos 30 dias</option>
+          <option value="all">Todos</option>
+        </select>
+
+        <select class="filtro-select" id="diseaseFilter" aria-label="Doença">
+          <option value="all">Todas as doenças</option>
+        </select>
+
+        <button class="btn-secondary" id="filterButton" type="button">Filtrar</button>
+      </section>
+
+      <section class="charts-grid" aria-label="Gráficos de análise">
+        <article class="chart-card">
+          <div class="card-heading">
+            <h2>Análises por período</h2>
+            <p>Volume registrado nos últimos dias.</p>
+          </div>
+
+          <div class="bar-chart" id="periodChart" aria-label="Gráfico de barras">
+            <div style="--value: 52%"><span>Seg</span><strong>6</strong></div>
+            <div style="--value: 72%"><span>Ter</span><strong>9</strong></div>
+            <div style="--value: 46%"><span>Qua</span><strong>5</strong></div>
+            <div style="--value: 88%"><span>Qui</span><strong>12</strong></div>
+            <div style="--value: 64%"><span>Sex</span><strong>8</strong></div>
+            <div style="--value: 38%"><span>Sáb</span><strong>4</strong></div>
+            <div style="--value: 58%"><span>Dom</span><strong>8</strong></div>
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="card-heading">
+            <h2>Distribuição de doenças</h2>
+            <p>Diagnósticos mais frequentes na base atual.</p>
+          </div>
+
+          <div class="disease-list" id="diseaseList">
+            <div>
+              <span>Ferrugem</span>
+              <strong>35%</strong>
+              <i style="--value: 35%"></i>
+            </div>
+            <div>
+              <span>Mancha foliar</span>
+              <strong>24%</strong>
+              <i style="--value: 24%"></i>
+            </div>
+            <div>
+              <span>Oídio</span>
+              <strong>15%</strong>
+              <i style="--value: 15%"></i>
+            </div>
+            <div>
+              <span>Saudável</span>
+              <strong>26%</strong>
+              <i style="--value: 26%"></i>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="history-card" aria-labelledby="historicoTitle">
+        <div class="card-heading history-heading">
+          <div>
+            <h2 id="historicoTitle">Histórico recente</h2>
+            <p>Últimas análises registradas na plataforma.</p>
+          </div>
+          <button class="btn-secondary" type="button">Ver todos</button>
+        </div>
+
+        <div class="tabela-wrapper">
+          <table class="tabela-relatorios">
+            <thead>
+              <tr>
+                <th>Imagem</th>
+                <th>Data</th>
+                <th>Diagnóstico</th>
+                <th>Confiança</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+
+            <tbody id="historyBody">
+              <tr>
+                <td><div class="miniatura"></div></td>
+                <td>17/04/2026</td>
+                <td>Ferrugem</td>
+                <td>92%</td>
+                <td><span class="status status-danger">Doente</span></td>
+                <td><button class="btn-table" type="button">Ver</button></td>
+              </tr>
+
+              <tr>
+                <td><div class="miniatura healthy"></div></td>
+                <td>17/04/2026</td>
+                <td>Saudável</td>
+                <td>97%</td>
+                <td><span class="status status-success">Saudável</span></td>
+                <td><button class="btn-table" type="button">Ver</button></td>
+              </tr>
+
+              <tr>
+                <td><div class="miniatura spot"></div></td>
+                <td>16/04/2026</td>
+                <td>Mancha foliar</td>
+                <td>88%</td>
+                <td><span class="status status-danger">Doente</span></td>
+                <td><button class="btn-table" type="button">Ver</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>LabLeaf - Inteligência para análise agrícola</p>
+          <p>Contato: lableaf@gmail.com</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+          <a href="https://github.com/LabLeafBR" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="relatorio.js"></script>
+  </body>
+</html>

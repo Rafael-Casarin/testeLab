@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil | LabLeaf</title>
+    <link rel="stylesheet" href="conta.css" />
+  </head>
+
+  <body data-auth-required="true">
+    <script>
+      if (!localStorage.getItem("authToken")) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <header class="cabecalho">
+      <a class="logo-area" href="index.html" aria-label="Ir para a página inicial">
+        <img src="imagens/lableaf.png" alt="Logo LabLeaf" class="logo-img" />
+        <span class="logo-texto">LabLeaf</span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <a href="index.html">Análise</a>
+        <a href="relatorio.html">Relatórios</a>
+        <a href="planos.html">Planos</a>
+      </nav>
+
+      <div class="user-container">
+        <button class="user" id="menuButton" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="dropdown" id="dropdownMenu">
+          <div class="dropdown-mobile-nav" aria-label="Navegação mobile">
+            <a href="index.html">Análise</a>
+            <a href="relatorio.html">Relatórios</a>
+            <a href="planos.html">Planos</a>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="configuracoes.html">Configurações</a>
+          <a href="perfil.html" class="active">Perfil</a>
+          <a href="login.html" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-hero" aria-labelledby="perfilTitle">
+        <p class="eyebrow">Conta</p>
+        <h1 id="perfilTitle">Perfil do usuário</h1>
+        <p>
+          Mantenha seus dados de acesso atualizados e proteja o histórico de
+          diagnósticos da sua conta.
+        </p>
+      </section>
+
+      <section class="account-grid" aria-label="Dados do perfil">
+        <div>
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Dados pessoais</h2>
+              <p>Essas informações identificam sua conta dentro da plataforma.</p>
+            </div>
+
+            <form id="profileForm">
+              <div class="form-grid">
+                <div class="input-group">
+                  <label for="nome">Nome completo</label>
+                  <input id="nome" name="nome" type="text" autocomplete="name" required />
+                </div>
+
+                <div class="input-group">
+                  <label for="email">E-mail</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
+              </div>
+
+              <p id="profileStatus" class="form-message" aria-live="polite"></p>
+
+              <div class="actions">
+                <button class="btn-primary" type="submit">Salvar alterações</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Segurança</h2>
+              <p>Altere a senha periodicamente para manter a conta protegida.</p>
+            </div>
+
+            <form id="passwordForm">
+              <div class="form-grid">
+                <div class="input-group full">
+                  <label for="senhaAtual">Senha atual</label>
+                  <input id="senhaAtual" type="password" autocomplete="current-password" required />
+                </div>
+
+                <div class="input-group">
+                  <label for="novaSenha">Nova senha</label>
+                  <input id="novaSenha" type="password" minlength="8" autocomplete="new-password" required />
+                </div>
+
+                <div class="input-group">
+                  <label for="confirmarNovaSenha">Confirmar nova senha</label>
+                  <input id="confirmarNovaSenha" type="password" minlength="8" autocomplete="new-password" required />
+                </div>
+              </div>
+
+              <p id="passwordStatus" class="form-message" aria-live="polite"></p>
+
+              <div class="actions">
+                <button class="btn-secondary" type="reset">Limpar</button>
+                <button class="btn-primary" type="submit">Alterar senha</button>
+              </div>
+            </form>
+          </article>
+        </div>
+
+        <aside class="summary-panel" aria-label="Resumo da conta">
+          <div class="profile-badge" id="profileInitial">L</div>
+          <h2 id="summaryName">Carregando...</h2>
+          <p id="summaryEmail">Buscando dados da conta.</p>
+
+          <div class="summary-list">
+            <div>
+              <span>Plano</span>
+              <strong id="summaryPlan">Nenhum plano ativo</strong>
+            </div>
+            <div>
+              <span>Tokens disponíveis</span>
+              <strong id="summaryTokens">0</strong>
+            </div>
+            <div>
+              <span>Renovação</span>
+              <strong id="summaryRenewal">--</strong>
+            </div>
+            <div>
+              <span>Criada em</span>
+              <strong id="summaryCreated">--</strong>
+            </div>
+            <div>
+              <span>Acesso</span>
+              <strong>Usuário autenticado</strong>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a class="btn-secondary" href="planos.html">Gerenciar plano</a>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>LabLeaf - Inteligência para análise agrícola</p>
+          <p>Contato: lableaf@gmail.com</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+          <a href="https://github.com/LabLeafBR" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="perfil.js"></script>
+  </body>
+</html>

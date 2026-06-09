@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  padding: 40px;
+}
+
+/* Container do menu */
+.menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botão */
+.menu-btn {
+  background: #6cb6c8;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+}
+
+.menu-btn:hover {
+  background: #59a7ba;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+
+  background: white;
+  min-width: 180px;
+  border-radius: 6px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+
+  /* animação */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: 0.25s;
+}
+
+/* Quando aberto */
+.dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Itens */
+.dropdown a {
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.dropdown a:hover {
+  background: #f0f0f0;
+}
