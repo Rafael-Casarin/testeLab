@@ -7,6 +7,10 @@
     return String(window.LABLEAF_API_BASE || "").replace(/\/$/, "");
   }
 
+  function isGitHubPagesWithoutApi() {
+    return window.location.hostname.endsWith(".github.io") && !apiBase();
+  }
+
   function getToken() {
     return localStorage.getItem("authToken") || "";
   }
@@ -27,6 +31,12 @@
   }
 
   async function request(path, options = {}) {
+    if (path.startsWith("/api/") && isGitHubPagesWithoutApi()) {
+      throw new Error(
+        "O GitHub Pages abriu a tela, mas a API do LabLeaf ainda não está hospedada. Configure LABLEAF_API_BASE com a URL do backend."
+      );
+    }
+
     const headers = new Headers(options.headers || {});
     const token = getToken();
     const body = options.body;
@@ -60,7 +70,12 @@
         clearSession();
       }
 
-      throw new Error(data.detail || data.message || `Erro HTTP ${response.status}`);
+      const rawMessage = data.detail || data.message || "";
+      const message = String(rawMessage).trim().startsWith("<")
+        ? `Erro HTTP ${response.status}. Verifique se a URL do backend está configurada.`
+        : rawMessage || `Erro HTTP ${response.status}`;
+
+      throw new Error(message);
     }
 
     return data;

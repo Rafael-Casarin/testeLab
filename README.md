@@ -68,3 +68,23 @@ abrir os HTMLs direto pelo navegador, tambem pode atualizar `config.js`:
 ```js
 window.LABLEAF_AI_API_URL = "https://sua-api-ia.onrender.com/predict";
 ```
+
+## GitHub Pages
+
+O GitHub Pages pode hospedar apenas o frontend estatico. Ele abre as telas, mas
+nao executa o backend FastAPI nem cria o PostgreSQL. Por isso, login, cadastro,
+perfil, planos e analises so funcionam no Pages depois que a API estiver
+publicada em um servico como Render.
+
+Fluxo recomendado:
+
+1. Publique este repositorio no Render usando o Blueprint do `render.yaml`.
+2. Copie a URL do Web Service, por exemplo `https://seu-backend.onrender.com`.
+3. Atualize `config.js` antes de publicar no GitHub Pages:
+
+```js
+window.LABLEAF_API_BASE = "https://seu-backend.onrender.com";
+```
+
+Sem essa URL, uma tentativa de login pelo GitHub Pages nao tem para onde enviar
+o `POST /api/auth/login`.
