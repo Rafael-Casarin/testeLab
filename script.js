@@ -112,12 +112,35 @@ function getConfidenceNumber(value) {
   return numberValue <= 1 ? numberValue * 100 : numberValue;
 }
 
+function firstPresent(...values) {
+  return values.find((value) => value !== undefined && value !== null && value !== "");
+}
+
 function getAnalysisFromResponse(data) {
+  const mainPrediction = Array.isArray(data.top_k) ? data.top_k[0] : null;
+  const className = firstPresent(
+    data.classe,
+    data.doenca,
+    data.resultado,
+    data.class_name,
+    data.predicted_class,
+    data.classe_predita,
+    mainPrediction?.classe
+  );
+  const confidence = firstPresent(
+    data.confianca,
+    data.confidence,
+    data.confidence_percent,
+    data.confianca_percentual,
+    data.percentual_confianca,
+    data.probabilidade,
+    mainPrediction?.percentual,
+    mainPrediction?.probabilidade
+  );
+
   return {
-    classe: data.classe || data.doenca || data.resultado || "Não informado",
-    confianca: formatConfidence(
-      data.confianca || data.confidence || data.probabilidade
-    ),
+    classe: className || "Não informado",
+    confianca: formatConfidence(confidence),
     recomendacao:
       data.recomendacao ||
       data.recommendation ||
@@ -128,8 +151,17 @@ function getAnalysisFromResponse(data) {
 
 async function saveAnalysis(file, rawData, analysis) {
   const formData = new FormData();
-  const rawConfidence =
-    rawData.confianca || rawData.confidence || rawData.probabilidade;
+  const mainPrediction = Array.isArray(rawData.top_k) ? rawData.top_k[0] : null;
+  const rawConfidence = firstPresent(
+    rawData.confianca,
+    rawData.confidence,
+    rawData.confidence_percent,
+    rawData.confianca_percentual,
+    rawData.percentual_confianca,
+    rawData.probabilidade,
+    mainPrediction?.percentual,
+    mainPrediction?.probabilidade
+  );
   const confidenceNumber = getConfidenceNumber(rawConfidence || analysis.confianca);
   const resultImage = rawData.imagem_resultado || rawData.result_image;
 
