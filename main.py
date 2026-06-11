@@ -5,6 +5,7 @@ import json
 import os
 import secrets
 import shutil
+import unicodedata
 import uuid
 from collections import Counter
 from datetime import datetime, timedelta, timezone
@@ -267,6 +268,88 @@ PLAN_CATALOG: dict[str, dict[str, Any]] = {
     },
 }
 
+EMPTY_RECOMMENDATION_MESSAGES = {
+    "nenhuma recomendacao retornada pela api",
+    "sem recomendacao",
+}
+RECOMMENDATION_CATALOG: dict[str, str] = {
+    "mosaic virus": (
+        "Doenca viral sem tratamento curativo. Use sementes certificadas, monitore "
+        "e reduza insetos vetores, elimine plantas voluntarias e remova plantas "
+        "muito afetadas quando houver foco localizado."
+    ),
+    "mossaic virus": (
+        "Doenca viral sem tratamento curativo. Use sementes certificadas, monitore "
+        "e reduza insetos vetores, elimine plantas voluntarias e remova plantas "
+        "muito afetadas quando houver foco localizado."
+    ),
+    "yellow mosaic": (
+        "Doenca viral sem tratamento curativo. Reforce o controle de insetos vetores, "
+        "elimine plantas voluntarias e hospedeiras proximas e priorize sementes e "
+        "cultivares sadias nos proximos plantios."
+    ),
+    "bacterial blight": (
+        "Evite manejar a lavoura com folhas molhadas, use sementes sadias, faca "
+        "rotacao de culturas e monitore a evolucao das manchas. Em alta severidade, "
+        "confirme o diagnostico antes de qualquer intervencao."
+    ),
+    "brown spot": (
+        "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade "
+        "no baixeiro. Fungicida registrado pode ser avaliado quando houver historico "
+        "da area e condicoes favoraveis."
+    ),
+    "septoria": (
+        "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade "
+        "no baixeiro. Fungicida registrado pode ser avaliado quando houver historico "
+        "da area e condicoes favoraveis."
+    ),
+    "crestamento": (
+        "Use sementes sadias, reduza a permanencia de palhada infectada e monitore "
+        "folhas novas. Em areas com historico e clima favoravel, avalie fungicida "
+        "registrado com orientacao tecnica."
+    ),
+    "ferrugen": (
+        "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique "
+        "alertas regionais, elimine plantas voluntarias e avalie fungicida registrado "
+        "conforme recomendacao tecnica local."
+    ),
+    "ferrugem": (
+        "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique "
+        "alertas regionais, elimine plantas voluntarias e avalie fungicida registrado "
+        "conforme recomendacao tecnica local."
+    ),
+    "powdery mildew": (
+        "Monitore a disseminacao nas folhas, prefira cultivares menos suscetiveis e "
+        "evite estresse da lavoura. Fungicida registrado pode ser considerado se a "
+        "doenca avancar em fase sensivel."
+    ),
+    "southern blight": (
+        "Melhore a drenagem, reduza excesso de residuos infectados e faca rotacao com "
+        "culturas nao hospedeiras. Em areas recorrentes, planeje manejo de solo e "
+        "cultivares com acompanhamento tecnico."
+    ),
+    "sudden death syndrone": (
+        "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos "
+        "ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza "
+        "compactacao e nematoides."
+    ),
+    "sudden death syndrome": (
+        "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos "
+        "ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza "
+        "compactacao e nematoides."
+    ),
+    "healthy": (
+        "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento "
+        "da area, registre novas amostras e acompanhe mudancas de cor, manchas ou "
+        "queda precoce das folhas."
+    ),
+    "saudavel": (
+        "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento "
+        "da area, registre novas amostras e acompanhe mudancas de cor, manchas ou "
+        "queda precoce das folhas."
+    ),
+}
+
 
 def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
@@ -394,6 +477,28 @@ def subscription_tokens_remaining(subscription: Subscription) -> int:
     return max(0, subscription.tokens_total - subscription.tokens_used)
 
 
+def normalize_class_key(value: str | None) -> str:
+    normalized = unicodedata.normalize("NFD", value or "")
+    without_accents = "".join(
+        char for char in normalized if unicodedata.category(char) != "Mn"
+    )
+    return " ".join(
+        without_accents.lower().replace("_", " ").replace("-", " ").split()
+    )
+
+
+def is_empty_recommendation(value: str | None) -> bool:
+    if not value or not value.strip():
+        return True
+
+    key = normalize_class_key(value).rstrip(".!?")
+    return key in EMPTY_RECOMMENDATION_MESSAGES
+
+
+def recommendation_for_class(class_name: str | None) -> str:
+    return RECOMMENDATION_CATALOG.get(normalize_class_key(class_name), "")
+
+
 def subscription_payload(subscription: Subscription | None) -> dict[str, Any] | None:
     if subscription is None:
         return None
@@ -466,11 +571,16 @@ def get_current_user(
 
 
 def serialize_analysis(record: Analysis) -> dict[str, Any]:
+    recommendation = record.recomendacao
+
+    if is_empty_recommendation(recommendation):
+        recommendation = recommendation_for_class(record.classe) or recommendation
+
     return {
         "id": record.id,
         "classe": record.classe,
         "confianca": record.confianca,
-        "recomendacao": record.recomendacao,
+        "recomendacao": recommendation,
         "status": record.status,
         "erro": record.error_message,
         "imagem": record.image_url,
@@ -905,6 +1015,10 @@ async def create_analysis(
     stored_name = ""
     image_url = ""
     settings = get_user_settings(db, user)
+    initial_recommendation = recomendacao.strip() if recomendacao else ""
+
+    if is_empty_recommendation(initial_recommendation):
+        initial_recommendation = recommendation_for_class(class_name)
 
     if file is not None and file.filename:
         if file.content_type and not file.content_type.startswith("image/"):
@@ -930,7 +1044,7 @@ async def create_analysis(
         result_image_url=imagem_resultado,
         classe=class_name,
         confianca=confianca,
-        recomendacao=recomendacao,
+        recomendacao=initial_recommendation or None,
         status="completed",
     )
     db.add(record)

@@ -18,6 +18,42 @@ const baixarImagem = document.getElementById("baixarImagem");
 const baixarPdf = document.getElementById("baixarPdf");
 
 const AI_API_URL = window.LABLEAF_AI_API_URL || "";
+const EMPTY_RECOMMENDATION_MESSAGES = new Set([
+  "nenhuma recomendacao retornada pela api",
+  "sem recomendacao",
+]);
+const RECOMMENDATION_CATALOG = {
+  "mosaic virus":
+    "Doenca viral sem tratamento curativo. Use sementes certificadas, monitore e reduza insetos vetores, elimine plantas voluntarias e remova plantas muito afetadas quando houver foco localizado.",
+  "mossaic virus":
+    "Doenca viral sem tratamento curativo. Use sementes certificadas, monitore e reduza insetos vetores, elimine plantas voluntarias e remova plantas muito afetadas quando houver foco localizado.",
+  "yellow mosaic":
+    "Doenca viral sem tratamento curativo. Reforce o controle de insetos vetores, elimine plantas voluntarias e hospedeiras proximas e priorize sementes e cultivares sadias nos proximos plantios.",
+  "bacterial blight":
+    "Evite manejar a lavoura com folhas molhadas, use sementes sadias, faca rotacao de culturas e monitore a evolucao das manchas. Em alta severidade, confirme o diagnostico antes de qualquer intervencao.",
+  "brown spot":
+    "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
+  septoria:
+    "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
+  crestamento:
+    "Use sementes sadias, reduza a permanencia de palhada infectada e monitore folhas novas. Em areas com historico e clima favoravel, avalie fungicida registrado com orientacao tecnica.",
+  ferrugen:
+    "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
+  ferrugem:
+    "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
+  "powdery mildew":
+    "Monitore a disseminacao nas folhas, prefira cultivares menos suscetiveis e evite estresse da lavoura. Fungicida registrado pode ser considerado se a doenca avancar em fase sensivel.",
+  "southern blight":
+    "Melhore a drenagem, reduza excesso de residuos infectados e faca rotacao com culturas nao hospedeiras. Em areas recorrentes, planeje manejo de solo e cultivares com acompanhamento tecnico.",
+  "sudden death syndrone":
+    "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza compactacao e nematoides.",
+  "sudden death syndrome":
+    "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza compactacao e nematoides.",
+  healthy:
+    "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento da area, registre novas amostras e acompanhe mudancas de cor, manchas ou queda precoce das folhas.",
+  saudavel:
+    "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento da area, registre novas amostras e acompanhe mudancas de cor, manchas ou queda precoce das folhas.",
+};
 
 let selectedImageDataUrl = "";
 let lastAnalysis = null;
@@ -116,6 +152,28 @@ function firstPresent(...values) {
   return values.find((value) => value !== undefined && value !== null && value !== "");
 }
 
+function normalizeClassKey(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[_-]+/g, " ")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function isEmptyRecommendation(value) {
+  if (!value) return true;
+
+  return EMPTY_RECOMMENDATION_MESSAGES.has(
+    normalizeClassKey(value).replace(/[.!?]+$/, "")
+  );
+}
+
+function recommendationForClass(className) {
+  return RECOMMENDATION_CATALOG[normalizeClassKey(className)] || "";
+}
+
 function getAnalysisFromResponse(data) {
   const mainPrediction = Array.isArray(data.top_k) ? data.top_k[0] : null;
   const className = firstPresent(
@@ -137,14 +195,17 @@ function getAnalysisFromResponse(data) {
     mainPrediction?.percentual,
     mainPrediction?.probabilidade
   );
+  const apiRecommendation = firstPresent(data.recomendacao, data.recommendation);
+  const recommendation = isEmptyRecommendation(apiRecommendation)
+    ? recommendationForClass(className)
+    : apiRecommendation;
 
   return {
     classe: className || "Não informado",
     confianca: formatConfidence(confidence),
     recomendacao:
-      data.recomendacao ||
-      data.recommendation ||
-      "Nenhuma recomendação retornada pela API.",
+      recommendation ||
+      "Confirme o diagnostico em campo e procure orientacao tecnica para definir o manejo mais adequado.",
     data: new Date(),
   };
 }
