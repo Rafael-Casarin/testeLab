@@ -29,27 +29,67 @@ const RECOMMENDATION_CATALOG = {
     "Doenca viral sem tratamento curativo. Use sementes certificadas, monitore e reduza insetos vetores, elimine plantas voluntarias e remova plantas muito afetadas quando houver foco localizado.",
   "yellow mosaic":
     "Doenca viral sem tratamento curativo. Reforce o controle de insetos vetores, elimine plantas voluntarias e hospedeiras proximas e priorize sementes e cultivares sadias nos proximos plantios.",
+  "mosaico amarelo":
+    "Doenca viral sem tratamento curativo. Reforce o controle de insetos vetores, elimine plantas voluntarias e hospedeiras proximas e priorize sementes e cultivares sadias nos proximos plantios.",
   "bacterial blight":
+    "Evite manejar a lavoura com folhas molhadas, use sementes sadias, faca rotacao de culturas e monitore a evolucao das manchas. Em alta severidade, confirme o diagnostico antes de qualquer intervencao.",
+  "mancha bacteriana":
     "Evite manejar a lavoura com folhas molhadas, use sementes sadias, faca rotacao de culturas e monitore a evolucao das manchas. Em alta severidade, confirme o diagnostico antes de qualquer intervencao.",
   "brown spot":
     "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
+  "mancha marrom":
+    "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
   septoria:
     "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
+  septoriose:
+    "Maneje restos culturais, faca rotacao fora da soja e acompanhe a severidade no baixeiro. Fungicida registrado pode ser avaliado quando houver historico da area e condicoes favoraveis.",
+  "cercospora leaf blight":
+    "Use sementes sadias, reduza a permanencia de palhada infectada e monitore folhas novas. Em areas com historico e clima favoravel, avalie fungicida registrado com orientacao tecnica.",
+  "crestamento foliar por cercospora":
+    "Use sementes sadias, reduza a permanencia de palhada infectada e monitore folhas novas. Em areas com historico e clima favoravel, avalie fungicida registrado com orientacao tecnica.",
   crestamento:
     "Use sementes sadias, reduza a permanencia de palhada infectada e monitore folhas novas. Em areas com historico e clima favoravel, avalie fungicida registrado com orientacao tecnica.",
   ferrugen:
     "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
   ferrugem:
     "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
+  "soybean rust":
+    "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
+  "ferrugem asiatica":
+    "Suspeita de ferrugem exige monitoramento rapido. Confirme em campo, verifique alertas regionais, elimine plantas voluntarias e avalie fungicida registrado conforme recomendacao tecnica local.",
   "powdery mildew":
     "Monitore a disseminacao nas folhas, prefira cultivares menos suscetiveis e evite estresse da lavoura. Fungicida registrado pode ser considerado se a doenca avancar em fase sensivel.",
+  oidio:
+    "Monitore a disseminacao nas folhas, prefira cultivares menos suscetiveis e evite estresse da lavoura. Fungicida registrado pode ser considerado se a doenca avancar em fase sensivel.",
+  "downey mildew":
+    "Evite excesso de umidade no dossel, monitore a disseminacao em folhas novas e priorize cultivares menos suscetiveis. Em areas recorrentes, avalie manejo preventivo com orientacao tecnica.",
+  mildio:
+    "Evite excesso de umidade no dossel, monitore a disseminacao em folhas novas e priorize cultivares menos suscetiveis. Em areas recorrentes, avalie manejo preventivo com orientacao tecnica.",
   "southern blight":
+    "Melhore a drenagem, reduza excesso de residuos infectados e faca rotacao com culturas nao hospedeiras. Em areas recorrentes, planeje manejo de solo e cultivares com acompanhamento tecnico.",
+  "murcha de sclerotium":
     "Melhore a drenagem, reduza excesso de residuos infectados e faca rotacao com culturas nao hospedeiras. Em areas recorrentes, planeje manejo de solo e cultivares com acompanhamento tecnico.",
   "sudden death syndrone":
     "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza compactacao e nematoides.",
   "sudden death syndrome":
     "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza compactacao e nematoides.",
+  "sindrome da morte subita":
+    "Nao ha tratamento de resgate eficiente em plantas ja afetadas. Para proximos ciclos, use cultivares tolerantes, trate sementes, melhore drenagem e reduza compactacao e nematoides.",
+  frogeye:
+    "Monitore a evolucao das lesoes, reduza restos culturais infectados e use rotacao de culturas. Em areas com historico, avalie cultivares tolerantes e fungicida registrado com orientacao tecnica.",
+  "olho de ra":
+    "Monitore a evolucao das lesoes, reduza restos culturais infectados e use rotacao de culturas. Em areas com historico, avalie cultivares tolerantes e fungicida registrado com orientacao tecnica.",
+  "target spot":
+    "Acompanhe a severidade no baixeiro, reduza estresse da lavoura e maneje restos culturais. Se a doenca avancar em fase reprodutiva, avalie fungicida registrado com orientacao tecnica.",
+  "mancha alvo":
+    "Acompanhe a severidade no baixeiro, reduza estresse da lavoura e maneje restos culturais. Se a doenca avancar em fase reprodutiva, avalie fungicida registrado com orientacao tecnica.",
+  "potassium deficiency":
+    "Indicio de deficiencia nutricional. Confirme com analise de solo ou foliar, revise adubacao potassica e corrija compactacao, umidade ou pH que possam limitar a absorcao.",
+  "deficiencia de potassio":
+    "Indicio de deficiencia nutricional. Confirme com analise de solo ou foliar, revise adubacao potassica e corrija compactacao, umidade ou pH que possam limitar a absorcao.",
   healthy:
+    "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento da area, registre novas amostras e acompanhe mudancas de cor, manchas ou queda precoce das folhas.",
+  "folha saudavel":
     "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento da area, registre novas amostras e acompanhe mudancas de cor, manchas ou queda precoce das folhas.",
   saudavel:
     "Nao ha indicio relevante de doenca nesta imagem. Mantenha o monitoramento da area, registre novas amostras e acompanhe mudancas de cor, manchas ou queda precoce das folhas.",
@@ -185,6 +225,10 @@ function firstArrayItem(...values) {
 }
 
 function getAnalysisFromResponse(data) {
+  const resultPrediction =
+    data.result && typeof data.result === "object" && !Array.isArray(data.result)
+      ? data.result
+      : null;
   const mainPrediction = firstArrayItem(
     data.top_k,
     data.predictions,
@@ -202,8 +246,15 @@ function getAnalysisFromResponse(data) {
     data.predicao,
     data.label,
     data.name,
+    data.class,
+    resultPrediction?.label,
+    resultPrediction?.class,
+    resultPrediction?.classe,
+    resultPrediction?.class_name,
+    resultPrediction?.name,
     mainPrediction?.classe,
     mainPrediction?.class_name,
+    mainPrediction?.class,
     mainPrediction?.name,
     mainPrediction?.label
   );
@@ -216,6 +267,11 @@ function getAnalysisFromResponse(data) {
     data.probabilidade,
     data.probability,
     data.score,
+    resultPrediction?.percentual,
+    resultPrediction?.probabilidade,
+    resultPrediction?.probability,
+    resultPrediction?.confidence,
+    resultPrediction?.score,
     mainPrediction?.percentual,
     mainPrediction?.probabilidade,
     mainPrediction?.probability,
@@ -239,6 +295,10 @@ function getAnalysisFromResponse(data) {
 
 async function saveAnalysis(file, rawData, analysis) {
   const formData = new FormData();
+  const resultPrediction =
+    rawData.result && typeof rawData.result === "object" && !Array.isArray(rawData.result)
+      ? rawData.result
+      : null;
   const mainPrediction = firstArrayItem(
     rawData.top_k,
     rawData.predictions,
@@ -254,6 +314,11 @@ async function saveAnalysis(file, rawData, analysis) {
     rawData.probabilidade,
     rawData.probability,
     rawData.score,
+    resultPrediction?.percentual,
+    resultPrediction?.probabilidade,
+    resultPrediction?.probability,
+    resultPrediction?.confidence,
+    resultPrediction?.score,
     mainPrediction?.percentual,
     mainPrediction?.probabilidade,
     mainPrediction?.probability,
