@@ -21,7 +21,7 @@ services:
       - key: RETURN_RESET_TOKEN
         value: "true"
       - key: AI_API_URL
-        value: https://lableafapiv2.onrender.com/predict
+        value: https://lableafapi.onrender.com/predict
 
 databases:
   - name: lableaf-postgres

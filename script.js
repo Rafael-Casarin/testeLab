@@ -174,8 +174,23 @@ function recommendationForClass(className) {
   return RECOMMENDATION_CATALOG[normalizeClassKey(className)] || "";
 }
 
+function firstArrayItem(...values) {
+  for (const value of values) {
+    if (Array.isArray(value) && value.length > 0) {
+      return value[0];
+    }
+  }
+
+  return null;
+}
+
 function getAnalysisFromResponse(data) {
-  const mainPrediction = Array.isArray(data.top_k) ? data.top_k[0] : null;
+  const mainPrediction = firstArrayItem(
+    data.top_k,
+    data.predictions,
+    data.detections,
+    data.results
+  );
   const className = firstPresent(
     data.classe,
     data.doenca,
@@ -183,7 +198,14 @@ function getAnalysisFromResponse(data) {
     data.class_name,
     data.predicted_class,
     data.classe_predita,
-    mainPrediction?.classe
+    data.prediction,
+    data.predicao,
+    data.label,
+    data.name,
+    mainPrediction?.classe,
+    mainPrediction?.class_name,
+    mainPrediction?.name,
+    mainPrediction?.label
   );
   const confidence = firstPresent(
     data.confianca,
@@ -192,8 +214,13 @@ function getAnalysisFromResponse(data) {
     data.confianca_percentual,
     data.percentual_confianca,
     data.probabilidade,
+    data.probability,
+    data.score,
     mainPrediction?.percentual,
-    mainPrediction?.probabilidade
+    mainPrediction?.probabilidade,
+    mainPrediction?.probability,
+    mainPrediction?.confidence,
+    mainPrediction?.score
   );
   const apiRecommendation = firstPresent(data.recomendacao, data.recommendation);
   const recommendation = isEmptyRecommendation(apiRecommendation)
@@ -212,7 +239,12 @@ function getAnalysisFromResponse(data) {
 
 async function saveAnalysis(file, rawData, analysis) {
   const formData = new FormData();
-  const mainPrediction = Array.isArray(rawData.top_k) ? rawData.top_k[0] : null;
+  const mainPrediction = firstArrayItem(
+    rawData.top_k,
+    rawData.predictions,
+    rawData.detections,
+    rawData.results
+  );
   const rawConfidence = firstPresent(
     rawData.confianca,
     rawData.confidence,
@@ -220,8 +252,13 @@ async function saveAnalysis(file, rawData, analysis) {
     rawData.confianca_percentual,
     rawData.percentual_confianca,
     rawData.probabilidade,
+    rawData.probability,
+    rawData.score,
     mainPrediction?.percentual,
-    mainPrediction?.probabilidade
+    mainPrediction?.probabilidade,
+    mainPrediction?.probability,
+    mainPrediction?.confidence,
+    mainPrediction?.score
   );
   const confidenceNumber = getConfidenceNumber(rawConfidence || analysis.confianca);
   const resultImage = rawData.imagem_resultado || rawData.result_image;

@@ -1139,7 +1139,7 @@ def root() -> FileResponse:
 @app.get("/config.js", include_in_schema=False)
 def runtime_config() -> PlainTextResponse:
     api_base = os.getenv("PUBLIC_API_BASE", "")
-    ai_api_url = os.getenv("AI_API_URL", "https://lableafapiv2.onrender.com/predict")
+    ai_api_url = os.getenv("AI_API_URL", "https://lableafapi.onrender.com/predict")
     content = "\n".join(
         [
             f"window.LABLEAF_API_BASE = {json.dumps(api_base)};",
