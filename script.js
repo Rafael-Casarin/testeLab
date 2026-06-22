@@ -14,7 +14,6 @@ const modalStatus = document.getElementById("modalStatus");
 const resultadoClasse = document.getElementById("resultadoClasse");
 const resultadoConfianca = document.getElementById("resultadoConfianca");
 const resultadoRecomendacao = document.getElementById("resultadoRecomendacao");
-const baixarImagem = document.getElementById("baixarImagem");
 const baixarPdf = document.getElementById("baixarPdf");
 
 const AI_API_URL = window.LABLEAF_AI_API_URL || "";
@@ -137,7 +136,6 @@ function setLoadingState(isLoading) {
 }
 
 function setDownloadButtons(enabled) {
-  if (baixarImagem) baixarImagem.disabled = !enabled;
   if (baixarPdf) baixarPdf.disabled = !enabled;
 }
 
@@ -605,143 +603,6 @@ function formatDate(date) {
   }).format(date || new Date());
 }
 
-function downloadFile(url, filename) {
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-}
-
-function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
-  const words = String(text).split(/\s+/);
-  let line = "";
-  let lines = 0;
-
-  for (let index = 0; index < words.length; index += 1) {
-    const testLine = line ? `${line} ${words[index]}` : words[index];
-    const metrics = ctx.measureText(testLine);
-
-    if (metrics.width > maxWidth && line) {
-      lines += 1;
-
-      if (maxLines && lines >= maxLines) {
-        ctx.fillText(`${line}...`, x, y);
-        return y + lineHeight;
-      }
-
-      ctx.fillText(line, x, y);
-      line = words[index];
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-
-  if (line) {
-    ctx.fillText(line, x, y);
-    y += lineHeight;
-  }
-
-  return y;
-}
-
-function drawContainedImage(ctx, image, x, y, width, height) {
-  const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
-  const renderedWidth = image.naturalWidth * scale;
-  const renderedHeight = image.naturalHeight * scale;
-  const offsetX = x + (width - renderedWidth) / 2;
-  const offsetY = y + (height - renderedHeight) / 2;
-
-  ctx.drawImage(image, offsetX, offsetY, renderedWidth, renderedHeight);
-}
-
-function loadImage(dataUrl) {
-  return new Promise((resolve) => {
-    if (!dataUrl) {
-      resolve(null);
-      return;
-    }
-
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = dataUrl;
-  });
-}
-
-async function baixarResultadoComoImagem() {
-  if (!lastAnalysis) return;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = 1200;
-  canvas.height = 1600;
-
-  const ctx = canvas.getContext("2d");
-  const image = await loadImage(selectedImageDataUrl);
-
-  ctx.fillStyle = "#f5f7f2";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#123f7a";
-  ctx.fillRect(0, 0, canvas.width, 220);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "700 54px Arial";
-  ctx.fillText("LabLeaf", 76, 92);
-
-  ctx.font = "400 30px Arial";
-  ctx.fillText("Resultado da análise agrícola", 76, 148);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(76, 282, 1048, 470);
-
-  if (image) {
-    drawContainedImage(ctx, image, 106, 312, 988, 410);
-  }
-
-  ctx.fillStyle = "#1f2933";
-  ctx.font = "700 38px Arial";
-  ctx.fillText("Diagnóstico", 76, 840);
-
-  ctx.font = "700 28px Arial";
-  ctx.fillStyle = "#667085";
-  ctx.fillText("Doença identificada", 76, 904);
-
-  ctx.fillStyle = "#1f2933";
-  ctx.font = "700 42px Arial";
-  wrapCanvasText(ctx, lastAnalysis.classe, 76, 958, 1000, 50, 2);
-
-  ctx.font = "700 28px Arial";
-  ctx.fillStyle = "#667085";
-  ctx.fillText("Confiança", 76, 1080);
-
-  ctx.fillStyle = "#177245";
-  ctx.font = "700 48px Arial";
-  ctx.fillText(lastAnalysis.confianca, 76, 1140);
-
-  ctx.font = "700 28px Arial";
-  ctx.fillStyle = "#667085";
-  ctx.fillText("Recomendação inicial", 76, 1240);
-
-  ctx.fillStyle = "#1f2933";
-  ctx.font = "400 32px Arial";
-  wrapCanvasText(ctx, lastAnalysis.recomendacao, 76, 1295, 1048, 44, 4);
-
-  ctx.fillStyle = "#667085";
-  ctx.font = "400 24px Arial";
-  ctx.fillText(`Gerado em ${formatDate(lastAnalysis.data)}`, 76, 1510);
-
-  canvas.toBlob((blob) => {
-    if (!blob) return;
-
-    const url = URL.createObjectURL(blob);
-    downloadFile(url, "resultado-lableaf.png");
-    URL.revokeObjectURL(url);
-  }, "image/png");
-}
-
 function baixarResultadoComoPdf() {
   if (!lastAnalysis) return;
 
@@ -916,10 +777,6 @@ document.addEventListener("keydown", function (event) {
     closeModal();
   }
 });
-
-if (baixarImagem) {
-  baixarImagem.addEventListener("click", baixarResultadoComoImagem);
-}
 
 if (baixarPdf) {
   baixarPdf.addEventListener("click", baixarResultadoComoPdf);

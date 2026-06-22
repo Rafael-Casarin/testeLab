@@ -5,10 +5,12 @@ import json
 import os
 import secrets
 import shutil
+import smtplib
 import unicodedata
 import uuid
 from collections import Counter
 from datetime import datetime, timedelta, timezone
+from email.message import EmailMessage
 from pathlib import Path
 from typing import Any, Generator
 
@@ -214,6 +216,17 @@ PBKDF2_ITERATIONS = 260_000
 SESSION_DAYS = int(os.getenv("SESSION_DAYS", "30"))
 RESET_TOKEN_MINUTES = int(os.getenv("RESET_TOKEN_MINUTES", "30"))
 RETURN_RESET_TOKEN = os.getenv("RETURN_RESET_TOKEN", "true").lower() == "true"
+PUBLIC_SITE_URL = os.getenv(
+    "PUBLIC_SITE_URL", "https://rafael-casarin.github.io/testeLab"
+).rstrip("/")
+SMTP_HOST = os.getenv("SMTP_HOST", "").strip()
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "").strip()
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL", SMTP_USERNAME).strip()
+SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "LabLeaf").strip()
+SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
+SMTP_USE_SSL = os.getenv("SMTP_USE_SSL", "false").lower() == "true"
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 PLAN_CYCLE_DAYS = 30
 
@@ -465,6 +478,67 @@ def normalize_email(email: str) -> str:
 
 def validate_email(email: str) -> bool:
     return "@" in email and "." in email.rsplit("@", 1)[-1]
+
+
+def smtp_is_configured() -> bool:
+    return bool(SMTP_HOST and SMTP_PORT and SMTP_FROM_EMAIL)
+
+
+def reset_password_url(token: str) -> str:
+    return f"{PUBLIC_SITE_URL}/recuperar.html?token={token}"
+
+
+def send_password_reset_email(email: str, reset_url: str) -> None:
+    if not smtp_is_configured():
+        raise RuntimeError("SMTP nao configurado.")
+
+    message = EmailMessage()
+    message["Subject"] = "Redefinicao de senha - LabLeaf"
+    message["From"] = f"{SMTP_FROM_NAME} <{SMTP_FROM_EMAIL}>"
+    message["To"] = email
+    message.set_content(
+        "\n".join(
+            [
+                "Ola,",
+                "",
+                "Recebemos uma solicitacao para redefinir sua senha no LabLeaf.",
+                f"Acesse o link abaixo em ate {RESET_TOKEN_MINUTES} minutos:",
+                "",
+                reset_url,
+                "",
+                "Se voce nao solicitou essa alteracao, ignore este e-mail.",
+                "",
+                "Equipe LabLeaf",
+            ]
+        )
+    )
+    message.add_alternative(
+        f"""
+        <html>
+          <body>
+            <p>Ola,</p>
+            <p>Recebemos uma solicitacao para redefinir sua senha no LabLeaf.</p>
+            <p>
+              <a href="{reset_url}">Clique aqui para criar uma nova senha</a>
+              em ate {RESET_TOKEN_MINUTES} minutos.
+            </p>
+            <p>Se voce nao solicitou essa alteracao, ignore este e-mail.</p>
+            <p>Equipe LabLeaf</p>
+          </body>
+        </html>
+        """,
+        subtype="html",
+    )
+
+    smtp_class = smtplib.SMTP_SSL if SMTP_USE_SSL else smtplib.SMTP
+    with smtp_class(SMTP_HOST, SMTP_PORT, timeout=20) as smtp:
+        if SMTP_USE_TLS and not SMTP_USE_SSL:
+            smtp.starttls()
+
+        if SMTP_USERNAME and SMTP_PASSWORD:
+            smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+
+        smtp.send_message(message)
 
 
 def hash_password(password: str) -> str:
@@ -884,11 +958,22 @@ def forgot_password(
     )
     db.commit()
 
+    reset_url = reset_password_url(token)
+
+    if smtp_is_configured():
+        try:
+            send_password_reset_email(email, reset_url)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail="Nao foi possivel enviar o email de recuperacao. Verifique a configuracao SMTP.",
+            ) from exc
+
     if RETURN_RESET_TOKEN:
         response.update(
             {
                 "reset_token": token,
-                "reset_url": f"recuperar.html?token={token}",
+                "reset_url": reset_url,
                 "expires_in_minutes": RESET_TOKEN_MINUTES,
             }
         )

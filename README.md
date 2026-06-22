@@ -47,7 +47,23 @@ DATABASE_URL=postgresql://usuario:senha@localhost:5432/lableaf
 
 Enquanto nao houver servico de e-mail configurado, `RETURN_RESET_TOKEN=true`
 faz a tela de recuperacao mostrar o link de redefinicao gerado. Em producao,
-troque para `false` depois de integrar um envio de e-mail.
+use `RETURN_RESET_TOKEN=false` e configure SMTP:
+
+```bash
+PUBLIC_SITE_URL=https://rafael-casarin.github.io/testeLab
+SMTP_HOST=smtp.seu-provedor.com
+SMTP_PORT=587
+SMTP_USERNAME=usuario-smtp
+SMTP_PASSWORD=senha-ou-api-key
+SMTP_FROM_EMAIL=contato@seudominio.com
+SMTP_FROM_NAME=LabLeaf
+SMTP_USE_TLS=true
+SMTP_USE_SSL=false
+```
+
+No Render, preencha essas variaveis na aba Environment do Web Service. Para
+Gmail, normalmente e necessario criar uma senha de app; para provedores como
+Brevo, SendGrid ou Mailgun, use a chave/senha SMTP fornecida pelo painel.
 
 ## Deploy no Render
 
