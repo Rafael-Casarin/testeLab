@@ -39,7 +39,7 @@ services:
       - key: SMTP_USE_SSL
         value: "false"
       - key: AI_API_URL
-        value: https://lableafapi.onrender.com/predict
+        value: https://lableafapiv2.onrender.com/predict
 
 databases:
   - name: lableaf-postgres
